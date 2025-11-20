@@ -2,110 +2,201 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCBC - Banking made easy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap');
+        body { font-family: 'Open Sans', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body>
+<body class="bg-white">
 
+    <div class="bg-gradient-to-r from-slate-600 to-slate-500 text-white text-sm py-3 px-4 flex justify-center items-start gap-3">
+        <div class="bg-white text-slate-600 rounded text-xs font-bold px-1 mt-1">!</div>
+        <div class="max-w-5xl">
+            <span class="font-bold block mb-1">Watch out for scam callers impersonating OCBC staff</span>
+            <p class="opacity-90 text-xs leading-relaxed">
+                Are you getting calls from unknown numbers? If a caller claims to be from OCBC and says they are connecting you to the police, hang up. Banks do not operate this way.
+                <a href="#" class="underline ml-1">Learn more.</a>
+            </p>
+        </div>
+    </div>
+
+    <header class="bg-white py-6 px-4 md:px-12 flex justify-between items-center max-w-7xl mx-auto w-full relative z-50">
+        <div class="flex items-center gap-12">
+            <div class="text-red-600 font-inter font-bold text-4xl tracking-tighter flex flex-col leading-none">
+                <span>OCBC</span>
+                <span class="text-xs text-gray-400 font-normal mt-1 tracking-normal">Banking made easy</span>
+            </div>
+
+            <nav class="hidden md:flex gap-8 font-bold text-lg text-gray-800 font-inter">
+                <a href="#" class="flex items-center gap-2 hover:text-red-600">
+                    <i data-lucide="home" class="w-5 h-5"></i> Personal
+                </a>
+                <a href="#" class="flex items-center gap-2 hover:text-red-600">
+                    <i data-lucide="briefcase" class="w-5 h-5"></i> Business
+                </a>
+                <a href="#" class="flex items-center gap-2 hover:text-red-600">
+                    <i data-lucide="credit-card" class="w-5 h-5"></i> Card Services
+                </a>
+            </nav>
+        </div>
+
+        <div class="flex items-center gap-6 font-inter">
+            <span class="font-bold text-xl text-gray-800 cursor-pointer">EN</span>
+            <button class="text-red-600 font-bold text-xl flex items-center gap-2 hover:opacity-80">
+                Login <i data-lucide="user" class="w-6 h-6 fill-current"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="bg-[#F2EEEE] pt-20 pb-48 px-4 flex flex-col items-center relative">
+
+        <div class="w-full max-w-3xl relative z-30 mb-12">
+            <div id="suggestions-box" class="hidden absolute bottom-full mb-2 w-full bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                <div id="suggestions-title" class="bg-gray-50 px-4 py-2 text-xs font-bold text-gray-500 uppercase tracking-wide"></div>
+                <div id="suggestions-list"></div>
+            </div>
+
+            <div class="relative group">
+                <input
+                    type="text"
+                    id="smart-input"
+                    placeholder="Need help? Ask me anything. You can also type your username..."
+                    class="w-full py-5 px-8 rounded-full text-lg shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-600 placeholder-gray-400 font-inter"
+                />
+                <i data-lucide="mic" class="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-800 cursor-pointer"></i>
+            </div>
+        </div>
+
+        <div class="bg-[#545252] rounded-[20px] p-10 w-full max-w-5xl relative z-20 shadow-2xl -mb-32">
+            <h2 class="text-white text-3xl font-bold mb-8 text-center font-inter">Popular Services</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 flex flex-col gap-4 hover:scale-105 transition-transform cursor-pointer border border-[#EFEFEF]">
+                    <div class="bg-[#F8F4F4] w-12 h-12 rounded-xl flex items-center justify-center">
+                         <i data-lucide="wallet" class="text-red-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-red-600 font-inter text-sm">Open Account</h3>
+                        <p class="text-gray-400 text-xs mt-1 font-inter">Start your banking journey with us</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 flex flex-col gap-4 hover:scale-105 transition-transform cursor-pointer border border-[#EFEFEF]">
+                    <div class="bg-[#F8F4F4] w-12 h-12 rounded-xl flex items-center justify-center">
+                         <i data-lucide="send" class="text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-blue-600 font-inter text-sm">Transfer Funds</h3>
+                        <p class="text-gray-400 text-xs mt-1 font-inter">Quick and Secure Transfer</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 flex flex-col gap-4 hover:scale-105 transition-transform cursor-pointer border border-[#EFEFEF]">
+                    <div class="bg-[#F8F4F4] w-12 h-12 rounded-xl flex items-center justify-center">
+                         <i data-lucide="trending-up" class="text-orange-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-orange-500 font-inter text-sm">Investments</h3>
+                        <p class="text-gray-400 text-xs mt-1 font-inter">Explore Investment Opportunities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="h-48 bg-white"></div>
+
+    <section class="bg-white py-20 max-w-7xl mx-auto px-4 md:px-12">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="flex-1">
+                <h2 class="text-3xl font-bold text-[#363B40] mb-4 leading-snug">Purpose is about lifting others.</h2>
+                <p class="text-lg text-[#363B40] mb-8 font-light leading-relaxed">
+                    As One Group, OCBC enables aspirations all across ASEAN and Greater China.
+                </p>
+                <button class="text-[#005EFD] border-2 border-[#005EFD] px-6 py-2 rounded font-semibold hover:bg-blue-50 transition">
+                    Find out more
+                </button>
+            </div>
+            <div class="flex-1">
+                <img src="https://placehold.co/600x400/e2e8f0/94a3b8?text=OCBC+Building" alt="OCBC Building" class="rounded-[40px] w-full shadow-lg">
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white py-20 max-w-7xl mx-auto px-4 md:px-12 mb-20">
+        <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+            <div class="flex-1">
+                <h2 class="text-3xl font-bold text-[#363B40] mb-4 leading-snug">OCBC - your partner for Johor-Singapore Special Economic Zone</h2>
+                <p class="text-lg text-[#363B40] mb-8 font-light leading-relaxed">
+                    Grow your business beyond borders – backed by expert advisory from our dedicated teams.
+                </p>
+                <button class="text-[#005EFD] border-2 border-[#005EFD] px-6 py-2 rounded font-semibold hover:bg-blue-50 transition">
+                    Find out more
+                </button>
+            </div>
+            <div class="flex-1">
+                <img src="https://placehold.co/600x400/e2e8f0/94a3b8?text=City+View" alt="City View" class="rounded-tl-[80px] rounded-br-[80px] rounded-tr-[20px] rounded-bl-[20px] w-full shadow-lg">
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        const input = document.getElementById('smart-input');
+        const box = document.getElementById('suggestions-box');
+        const list = document.getElementById('suggestions-list');
+        const title = document.getElementById('suggestions-title');
+
+        let timeout = null;
+
+        // Listen for typing
+        input.addEventListener('keyup', function(e) {
+            clearTimeout(timeout);
+
+            // Wait 300ms after user stops typing to send to Python
+            timeout = setTimeout(async () => {
+                const val = e.target.value;
+
+                if(val.length === 0) {
+                    box.classList.add('hidden');
+                    return;
+                }
+
+                // Call Python API
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: val })
+                });
+
+                const data = await response.json();
+
+                if (data.options && data.options.length > 0) {
+                    box.classList.remove('hidden');
+                    title.innerText = data.title || "Suggestions";
+                    list.innerHTML = data.options.map(opt => `
+                        <div class="p-4 hover:bg-red-50 cursor-pointer font-semibold border-b last:border-0 text-sm text-gray-700 flex justify-between items-center" onclick="fillInput('${opt.label}')">
+                            ${opt.label}
+                        </div>
+                    `).join('');
+                } else {
+                    box.classList.add('hidden');
+                }
+            }, 300);
+        });
+
+        function fillInput(text) {
+            input.value = text;
+            // Trigger event again to potentially switch modes
+            input.dispatchEvent(new Event('keyup'));
+        }
+    </script>
 </body>
-</html><div style="width: 1440px; height: 3570px; position: relative; background: white; overflow: hidden">
-  <div style="width: 1444px; height: 1310px; left: 0px; top: 839px; position: absolute; background: #F2EEEE"></div>
-  <div style="width: 260px; height: 148px; left: 590px; top: 918px; position: absolute">
-    <div style="width: 260px; height: 148px; left: 0px; top: 0px; position: absolute; background: white; border-radius: 20px; border: 1px #EFEFEF solid"></div>
-    <div style="width: 216px; left: 22px; top: 23px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; display: inline-flex">
-      <div style="width: 42px; height: 38px; background: #F8F4F4; border-radius: 15px"></div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: black; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">Title</div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: #8B8B8B; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">Description</div>
-    </div>
-  </div>
-  <div style="width: 1440px; padding-left: 28.40px; padding-right: 40.40px; left: 0px; top: 0px; position: absolute; background: linear-gradient(338deg, var(--color-azure-34, #495A63) 0%, var(--color-azure-55, #7C909B) 100%); flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
-    <div style="width: 1389px; height: 90px; position: relative">
-      <div style="width: 1464px; height: 90px; min-height: 1px; padding-left: 12px; padding-right: 12px; left: -37.50px; top: 0px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
-        <div style="align-self: stretch; padding-left: 36px; padding-right: 40px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex">
-          <div style="align-self: stretch; padding-top: 2px; padding-bottom: 1px; padding-right: 15px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: flex">
-            <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: var(--color-white-solid, white); font-size: 16px; font-family: Open Sans; font-weight: 700; line-height: 24px; word-wrap: break-word">Watch out for scam callers impersonating OCBC staff</div>
-          </div>
-          <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 0.10px; display: flex">
-            <div data-hover="false" data-variant="4" style="justify-content: flex-start; align-items: flex-start; display: inline-flex">
-              <div style="justify-content: center; display: flex; flex-direction: column; color: var(--color-white-solid, white); font-size: 14px; font-family: Open Sans; font-weight: 400; line-height: 21px; word-wrap: break-word">Are you getting calls from unknown numbers? Do they begin with a recorded message? If a caller claims to be from OCBC and says they are connecting you to an external party (like the police), hang up! Banks<br/>do not operate this way.</div>
-            </div>
-            <div style="align-self: stretch; justify-content: center; align-items: flex-start; display: inline-flex">
-              <div style="width: 1364px; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
-                <div style="justify-content: center; display: flex; flex-direction: column; color: var(--color-white-solid, white); font-size: 14px; font-family: Open Sans; font-weight: 400; text-decoration: underline; line-height: 21px; word-wrap: break-word">Learn more.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style="left: 12px; top: 5.60px; position: absolute; justify-content: flex-start; align-items: flex-start; display: inline-flex">
-          <div data-variant="4" style="width: 18.23px; height: 16.81px; position: relative">
-            <div style="width: 18.25px; height: 16.20px; left: -0.01px; top: 0.30px; position: absolute; background: var(--color-white-solid, white)"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <img style="width: 342px; height: 155px; left: 56px; top: 119px; position: absolute" src="https://placehold.co/342x155" />
-  <div style="width: 305px; height: 37px; left: 93px; top: 264px; position: absolute; color: #9D9D9D; font-size: 24px; font-family: Inter; font-weight: 400; word-wrap: break-word">Banking made easy</div>
-  <div style="width: 215px; height: 37px; left: 512px; top: 250px; position: absolute; color: black; font-size: 32px; font-family: Inter; font-weight: 700; word-wrap: break-word">Personal</div>
-  <div style="width: 40px; height: 40px; left: 755px; top: 246px; position: absolute">
-    <div style="width: 33.33px; height: 31.67px; left: 3.33px; top: 3.33px; position: absolute; background: black"></div>
-  </div>
-  <div style="width: 215px; height: 37px; left: 801px; top: 247px; position: absolute; color: black; font-size: 32px; font-family: Inter; font-weight: 700; word-wrap: break-word">Business</div>
-  <div style="width: 58px; height: 37px; left: 1051px; top: 178px; position: absolute; color: black; font-size: 32px; font-family: Inter; font-weight: 700; word-wrap: break-word">EN</div>
-  <div style="width: 300px; height: 37px; left: 1090px; top: 249px; position: absolute; color: black; font-size: 32px; font-family: Inter; font-weight: 700; word-wrap: break-word">Card Services</div>
-  <div style="width: 36px; height: 36px; left: 1049px; top: 250px; position: absolute">
-    <div style="width: 31.50px; height: 24.75px; left: 2.25px; top: 5.62px; position: absolute; background: black"></div>
-  </div>
-  <div style="width: 1108px; height: 181px; left: 179px; top: 443px; position: absolute; border-radius: 50px; border: 1px #A9A4A4 solid"></div>
-  <div style="width: 1067px; height: 41px; left: 220px; top: 482px; position: absolute; color: #8B8282; font-size: 24px; font-family: Inter; font-weight: 400; word-wrap: break-word">Need help? Ask me anything. You can also type your username to jump to your account.</div>
-  <div style="width: 94px; height: 37px; left: 1162px; top: 178px; position: absolute; color: #FF0000; font-size: 32px; font-family: Inter; font-weight: 700; word-wrap: break-word">Login</div>
-  <div style="width: 50px; height: 49px; left: 1268px; top: 172px; position: absolute">
-    <div style="width: 33.33px; height: 32.67px; left: 8.33px; top: 8.17px; position: absolute; background: #FF0000"></div>
-  </div>
-  <img style="width: 852px; height: 640px; left: -130px; top: 2273px; position: absolute; border-radius: 80px" src="https://placehold.co/852x640" />
-  <img style="width: 924px; height: 517px; left: 642px; top: 1508px; position: absolute; border-radius: 80px" src="https://placehold.co/924x517" />
-  <div style="width: 983px; height: 401px; left: 229px; top: 748px; position: absolute; background: #545252; border-radius: 20px"></div>
-  <div style="left: 552px; top: 800px; position: absolute; justify-content: center; display: flex; flex-direction: column; color: white; font-size: 40px; font-family: Instrument Sans; font-weight: 700; word-wrap: break-word">Popular Services</div>
-  <div style="width: 260px; height: 148px; left: 289px; top: 918px; position: absolute">
-    <div style="width: 260px; height: 148px; left: 0px; top: 0px; position: absolute; background: white; border-radius: 20px; border: 1px #EFEFEF solid"></div>
-    <div style="width: 216px; left: 22px; top: 23px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; display: inline-flex">
-      <div style="width: 42px; height: 38px; background: #F8F4F4; border-radius: 15px"></div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: #FF0000; font-size: 12px; font-family: Inter; font-weight: 700; word-wrap: break-word">Open Account </div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: #8B8B8B; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">Start your banking journey with us</div>
-    </div>
-  </div>
-  <div style="width: 260px; height: 148px; left: 590px; top: 918px; position: absolute">
-    <div style="width: 260px; height: 148px; left: 0px; top: 0px; position: absolute; background: white; border-radius: 20px; border: 1px #EFEFEF solid"></div>
-    <div style="width: 216px; left: 22px; top: 23px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; display: inline-flex">
-      <div style="width: 42px; height: 38px; background: #F8F4F4; border-radius: 15px"></div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: #005EFD; font-size: 12px; font-family: Inter; font-weight: 700; word-wrap: break-word">Transfer Funds</div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: #8B8B8B; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">Quick and Secure Transfer</div>
-    </div>
-  </div>
-  <div style="width: 260px; height: 148px; left: 891px; top: 918px; position: absolute">
-    <div style="width: 260px; height: 148px; left: 0px; top: 0px; position: absolute; background: white; border-radius: 20px; border: 1px #EFEFEF solid"></div>
-    <div style="width: 216px; left: 22px; top: 23px; position: absolute; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; display: inline-flex">
-      <div style="width: 42px; height: 38px; background: #F8F4F4; border-radius: 15px"></div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: #FF7700; font-size: 12px; font-family: Inter; font-weight: 700; word-wrap: break-word">Investments</div>
-      <div style="align-self: stretch; justify-content: center; display: flex; flex-direction: column; color: #8B8B8B; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">Explore Investment Opportunities</div>
-    </div>
-  </div>
-  <div style="width: 369.09px; height: 33px; left: 124px; top: 1634px; position: absolute; justify-content: center; display: flex; flex-direction: column; color: #363B40; font-size: 24px; font-family: Open Sans; font-weight: 700; line-height: 36px; word-wrap: break-word">Purpose is about lifting others.</div>
-  <div style="width: 425.66px; height: 51px; left: 124px; top: 1685px; position: absolute; justify-content: center; display: flex; flex-direction: column; color: #363B40; font-size: 18px; font-family: Open Sans; font-weight: 400; line-height: 27px; word-wrap: break-word">As One Group, OCBC enables aspirations all across<br/>ASEAN and Greater China.</div>
-  <div style="width: 152.50px; height: 48px; left: 124px; top: 1766px; position: absolute; overflow: hidden; border-radius: 5px; outline: 2px #005EFD solid; outline-offset: -2px">
-    <div style="width: 109.04px; height: 24px; left: 22px; top: 12px; position: absolute; text-align: center; justify-content: center; display: flex; flex-direction: column; color: #005EFD; font-size: 16px; font-family: Open Sans; font-weight: 600; line-height: 24px; word-wrap: break-word">Find out more</div>
-  </div>
-  <div style="width: 23px; height: 22px; left: 320px; top: 949px; position: absolute">
-    <div style="width: 18.69px; height: 13.75px; left: 2.16px; top: 4.12px; position: absolute; outline: 1px var(--color-red-49, #CB2D3E) solid; outline-offset: -0.50px"></div>
-    <div style="width: 18.69px; height: 5.50px; left: 2.16px; top: 8.25px; position: absolute; outline: 1.88px var(--color-red-49, #CB2D3E) solid; outline-offset: -0.94px"></div>
-  </div>
-  <div style="width: 395.68px; height: 69px; left: 858px; top: 2454px; position: absolute; justify-content: center; display: flex; flex-direction: column; color: #363B40; font-size: 24px; font-family: Open Sans; font-weight: 700; line-height: 36px; word-wrap: break-word">OCBC - your partner for Johor-<br/>Singapore Special Economic Zone</div>
-  <div style="width: 434.37px; height: 132px; left: 858px; top: 2541px; position: absolute; justify-content: center; display: flex; flex-direction: column; color: #363B40; font-size: 18px; font-family: Open Sans; font-weight: 400; line-height: 27px; word-wrap: break-word">Grow your business beyond borders – backed by<br/>expert advisory from our dedicated JS-SEZ teams of<br/>experienced bankers, as well as a suite of simple,<br/>seamless and assured financial solutions to support<br/>your expansion.</div>
-  <div style="width: 152.50px; height: 48px; left: 858px; top: 2708px; position: absolute; overflow: hidden; border-radius: 5px; outline: 2px #005EFD solid; outline-offset: -2px">
-    <div style="width: 109.04px; height: 24px; left: 22px; top: 12px; position: absolute; text-align: center; justify-content: center; display: flex; flex-direction: column; color: #005EFD; font-size: 16px; font-family: Open Sans; font-weight: 600; line-height: 24px; word-wrap: break-word">Find out more</div>
-  </div>
-  <div style="width: 24px; height: 24px; left: 621px; top: 947px; position: absolute">
-    <div style="width: 24px; height: 24px; left: 0px; top: 0px; position: absolute"></div>
-    <div style="width: 19px; height: 18px; left: 2.50px; top: 3px; position: absolute; background: var(--color-azure-50, #005EFD)"></div>
-  </div>
-  <div style="width: 1440px; height: 170px; left: 0px; top: 2918px; position: absolute; background: white; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)"></div>
-</div>
+</html>
