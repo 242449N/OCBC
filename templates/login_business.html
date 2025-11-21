@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCBC Velocity - Business Banking Login</title>
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Open Sans", Arial, sans-serif;
+            background-color: #dae1e7; /* The light blue-gray background */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: white;
+            border-top: 5px solid #ce1126; /* OCBC Red */
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            color: #ce1126;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Simple CSS-only logo placeholder */
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #ce1126;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .language-links a {
+            text-decoration: none;
+            color: #005c9f;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .language-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            display: flex;
+            max-width: 900px;
+            width: 100%;
+            gap: 20px;
+        }
+
+        /* --- LEFT BOX: LOGIN --- */
+        .login-card {
+            background: white;
+            width: 400px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .secured-badge {
+            font-size: 10px;
+            color: #999;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-body {
+            padding: 20px;
+        }
+
+        /* The gray box inside the login card */
+        .gray-box {
+            background-color: #e9e9e9;
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .forgot-link {
+            display: block;
+            font-size: 12px;
+            color: #005c9f;
+            text-decoration: none;
+            margin-top: 5px;
+        }
+
+        .btn-login {
+            display: block;
+            width: 100px;
+            margin-top: 20px;
+            background-color: #ce1126; /* OCBC Red */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: auto; /* Push button to right */
+        }
+
+        .btn-login:hover {
+            background-color: #a50e1e;
+        }
+
+        /* --- RIGHT BOX: NOTICE --- */
+        .notice-card {
+            flex: 1; /* Take remaining space */
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .notice-card h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .notice-content p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #5d6b7c;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+        }
+
+        /* --- RESPONSIVE (Mobile) --- */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 0 15px;
+            }
+            .login-card, .notice-card {
+                width: 100%;
+            }
+            header {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="/static/OCBC.jpg" width="150" alt="Logo">
+        </div>
+        <div class="language-links">
+            <a href="#">English</a> |
+            <a href="#">中文</a> |
+            <a href="#">中文(繁體)</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <div class="login-card">
+                <div class="card-header">
+                    <h2>OCBC Velocity</h2>
+                    <div class="secured-badge">
+                        Secured Site &#128274; </div>
+                </div>
+
+                <div class="form-body">
+                    <form action="/api/login" method="POST">
+                        <div class="gray-box">
+                            <div class="form-group">
+                                <label>Select your country/region</label>
+                                <select class="form-control">
+                                    <option>Singapore</option>
+                                    <option>Malaysia</option>
+                                    <option>China</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Organisation ID</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>User ID</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" required>
+                                <a href="#" class="forgot-link">Forgot Password?</a>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-login">Login</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="notice-card">
+                <h3>Important Notice</h3>
+                <div class="notice-content">
+                    <p><strong>Welcome to OCBC Velocity</strong></p>
+                    <p>To login, please select the country/region your company has registered for.</p>
+                    <br>
+                    <p style="border-top: 1px solid #eee; padding-top:10px;">
+                        <em>Note: Never reveal your OTP, User ID, or Password to anyone. OCBC will never ask for these details via phone or SMS.</em>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2023 OCBC. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

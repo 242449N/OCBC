@@ -61,11 +61,35 @@
         </div>
     </div>
 
-            <a href="/login">
-                <button class="text-red-600 font-bold text-xl flex items-center gap-2 hover:opacity-80">
-                    {{ _('Login') }} <i data-lucide="user" class="w-6 h-6 fill-current"></i>
-                </button>
-            </a>
+<div class="relative" id="login-container">
+    <button onclick="toggleLoginMenu()" class="text-red-600 font-bold text-xl flex items-center gap-2 hover:opacity-80 focus:outline-none">
+        {{ _('Login') }}
+        <i data-lucide="user" class="w-6 h-6 fill-current"></i>
+        <i data-lucide="chevron-down" class="w-4 h-4 ml-1"></i>
+    </button>
+
+    <div id="login-dropdown" class="hidden absolute right-0 top-full mt-2 w-56 bg-white shadow-xl border border-gray-200 rounded-xl overflow-hidden z-50">
+        <a href="/login" class="flex items-center gap-3 px-5 py-4 hover:bg-red-50 group border-b border-gray-100">
+            <div class="bg-red-100 p-2 rounded-full group-hover:bg-red-200">
+                <i data-lucide="user" class="w-4 h-4 text-red-600"></i>
+            </div>
+            <div>
+                <span class="block text-sm font-bold text-gray-800 group-hover:text-red-600">Personal Login</span>
+                <span class="block text-xs text-gray-500">Internet Banking</span>
+            </div>
+        </a>
+
+        <a href="/login/business" class="flex items-center gap-3 px-5 py-4 hover:bg-red-50 group">
+            <div class="bg-blue-100 p-2 rounded-full group-hover:bg-blue-200">
+                <i data-lucide="briefcase" class="w-4 h-4 text-blue-600"></i>
+            </div>
+            <div>
+                <span class="block text-sm font-bold text-gray-800 group-hover:text-red-600">Business Login</span>
+                <span class="block text-xs text-gray-500">Velocity @ obcb</span>
+            </div>
+        </a>
+    </div>
+</div>
         </div>
     </header>
 
@@ -163,7 +187,23 @@
 
     <script>
         lucide.createIcons();
-        // ... (Keep your existing JS logic for suggestions) ...
+
+        // Toggle the dropdown visibility
+        function toggleLoginMenu() {
+            const menu = document.getElementById('login-dropdown');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close dropdown if clicking anywhere else on the screen
+        window.addEventListener('click', function(e) {
+            const container = document.getElementById('login-container');
+            const menu = document.getElementById('login-dropdown');
+
+            // If the click is OUTSIDE the container, hide the menu
+            if (!container.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
