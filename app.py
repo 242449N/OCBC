@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from Forms import CreateSearchForm_Admin
 import mysql.connector
 from twilio.rest import Client
+import uuid, time
+import qrcode
 load_dotenv()
 
 
@@ -63,6 +65,9 @@ mycursor = mydb.cursor()    # For accessing MySQL Database
 account_sid = 'AC28b18e8e89c17c5b7e732e932043c52e'
 auth_token = '8a5550abf8d7b38ce5ca4fb0938b5b4b'
 client = Client(account_sid, auth_token)
+
+QR_SESSIONS = {}
+
 
 def send_otp(phone_number):
     verification = client.verify \
@@ -224,6 +229,33 @@ def error():
     # Optionally pass extra error message with: render_template('error.html', error_message="Custom info")
     return render_template('error.html')
 
+@app.route('/login/qr')
+def login_qr():
+    qr_token = str(uuid.uuid4())
+    QR_SESSIONS[qr_token] = {"status": "pending", "expires_at": time.time() + 60}
+    qr_url = url_for('scan_qr', qr_token=qr_token, _external=True)
+    qr_img_path = f"static/qr_{qr_token}.png"
+    qrcode.make(qr_url).save(qr_img_path)
+    # Note: src="/static/qr_..." for Flask static handling!
+    return render_template('login_qr.html', qr_image_path=f'/static/qr_{qr_token}.png', qr_token=qr_token)
+
+@app.route('/scan-qr/<qr_token>')
+def scan_qr(qr_token):
+    # User scans QR with mobile → this endpoint hit
+    info = QR_SESSIONS.get(qr_token)
+    if not info or info["expires_at"] < time.time():
+        return "QR code expired or invalid", 400
+    info["status"] = "authenticated"
+    # Optionally, set session/cookie for logged-in user here or redirect
+    session['logged_in'] = True
+    return "QR Code scanned! You are logged in."
+
+@app.route('/api/qr-status/<qr_token>')
+def qr_status(qr_token):
+    info = QR_SESSIONS.get(qr_token)
+    if not info:
+        return jsonify(status="expired")
+    return jsonify(status=info["status"])
 
 
 
