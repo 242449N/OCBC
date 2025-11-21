@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, request, url_for, flash, redirect, session, Response
+import json
+from flask import Flask, render_template, request, url_for, jsonify, redirect, session
 from translate import Translator
 from flask_babel import Babel, gettext as _
 from dotenv import load_dotenv
@@ -70,7 +71,6 @@ def initialize_database():
         print("Error initializing database:", e)
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('homepage.html')
@@ -79,6 +79,11 @@ def home():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+
+@app.route('/login/business')
+def login_business():
+    return render_template('login_business.html')
 
 
 # --- THE LANGUAGE SWITCHER ROUTE ---
