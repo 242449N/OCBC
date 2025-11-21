@@ -1,0 +1,75 @@
+# English translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-11-21 00:55+0800\n"
+"PO-Revision-Date: 2025-11-21 01:06+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: templates/homepage.html:6
+msgid "OCBC - Banking made easy"
+msgstr ""
+
+#: templates/homepage.html:20
+msgid "Watch out for scam callers impersonating OCBC staff"
+msgstr ""
+
+#: templates/homepage.html:22
+msgid ""
+"Are you getting calls from unknown numbers? If a caller claims to be from"
+" OCBC and says they are connecting you to the police, hang up. Banks do "
+"not operate this way."
+msgstr ""
+
+#: templates/homepage.html:23
+msgid "Learn more."
+msgstr ""
+
+#: templates/homepage.html:32
+msgid "Banking made easy"
+msgstr ""
+
+#: templates/homepage.html:37
+msgid "Personal"
+msgstr ""
+
+#: templates/homepage.html:40
+msgid "Business"
+msgstr ""
+
+#: templates/homepage.html:43
+msgid "Card Services"
+msgstr ""
+
+#: templates/homepage.html:62
+msgid "Login"
+msgstr ""
+
+#: templates/homepage.html:74
+msgid "Need help? Ask me anything..."
+msgstr ""
+
+#: templates/homepage.html:82
+msgid "Popular Services"
+msgstr ""
+
+#: templates/homepage.html:89
+msgid "Open Account"
+msgstr ""
+
+#: templates/homepage.html:90
+msgid "Start your banking journey with us"
+msgstr ""
+
