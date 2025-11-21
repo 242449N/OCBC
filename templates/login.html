@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCBC Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+
+        /* Custom Red for OCBC branding */
+        .bg-brand-red { background-color: #FF3333; }
+        .text-brand-red { color: #FF3333; }
+        .shadow-brand { box-shadow: 0 10px 25px -5px rgba(255, 51, 51, 0.3); }
+
+        /* The Geometric Shape on the right */
+        .red-polygon {
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            background: linear-gradient(135deg, #FF4D4D 0%, #FF3333 100%);
+        }
+    </style>
+</head>
+<body class="bg-white h-screen flex overflow-hidden relative">
+
+    <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 md:px-24 relative z-10">
+
+        <div class="mb-10 flex items-center gap-2">
+            <img src="/static/OCBC.jpg" width="300">
+        </div>
+
+        <form class="w-full max-w-md space-y-6">
+            <div>
+                <input type="text" placeholder="Access Code"
+                    class="w-full p-4 rounded-xl border border-gray-200 shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                >
+            </div>
+            <div>
+                <input type="password" placeholder="PIN"
+                    class="w-full p-4 rounded-xl border border-gray-200 shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                >
+            </div>
+
+            <div class="flex items-center gap-3">
+                <input type="checkbox" id="stay-signed" class="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500">
+                <label for="stay-signed" class="text-gray-500 text-sm">Stay signed in</label>
+            </div>
+
+            <button class="w-full py-4 bg-brand-red text-white font-bold rounded-xl shadow-brand hover:opacity-90 transition-all transform hover:-translate-y-0.5">
+                LOGIN
+            </button>
+
+            <div class="text-center">
+                <a href="#" class="text-blue-500 text-sm font-medium hover:underline">No Access Code/PIN?</a>
+            </div>
+        </form>
+
+        <div class="w-full max-w-md mt-8">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-px bg-gray-300 flex-1"></div>
+                <span class="text-gray-400 text-xs uppercase tracking-wider">Alternative Login</span>
+                <div class="h-px bg-gray-300 flex-1"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button class="flex flex-col items-center justify-center py-4 border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-red-200 transition-colors group">
+                    <i data-lucide="lock" class="w-6 h-6 text-gray-600 mb-2 group-hover:text-red-500"></i>
+                    <span class="text-xs font-semibold text-gray-700">Singpass</span>
+                </button>
+
+                <button class="flex flex-col items-center justify-center py-4 border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-red-200 transition-colors group">
+                    <i data-lucide="fingerprint" class="w-6 h-6 text-gray-600 mb-2 group-hover:text-red-500"></i>
+                    <span class="text-xs font-semibold text-gray-700">Biometrics</span>
+                </button>
+
+                <button class="flex flex-col items-center justify-center py-4 border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-red-200 transition-colors group">
+                    <i data-lucide="key" class="w-6 h-6 text-gray-600 mb-2 group-hover:text-red-500"></i>
+                    <span class="text-xs font-semibold text-gray-700">Keypass</span>
+                </button>
+
+                <button class="flex flex-col items-center justify-center py-4 border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-red-200 transition-colors group">
+                    <i data-lucide="smartphone" class="w-6 h-6 text-gray-600 mb-2 group-hover:text-red-500"></i>
+                    <span class="text-xs font-semibold text-gray-700">OTP</span>
+                </button>
+            </div>
+
+            <div class="text-center mt-8 text-sm text-gray-500">
+                New to OCBC? <a href="#" class="text-brand-red font-semibold hover:underline">Open an account</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden lg:block absolute top-0 right-0 w-2/3 h-full pointer-events-none">
+        <div class="w-full h-full red-polygon shadow-2xl"></div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
