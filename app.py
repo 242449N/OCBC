@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 from Forms import CreateSearchForm_Admin
 import mysql.connector
 from twilio.rest import Client
+import uuid, time
+import qrcode
+import socket
 load_dotenv()
 
 
@@ -64,6 +67,9 @@ account_sid = 'AC28b18e8e89c17c5b7e732e932043c52e'
 auth_token = '8a5550abf8d7b38ce5ca4fb0938b5b4b'
 client = Client(account_sid, auth_token)
 
+QR_SESSIONS = {}
+
+
 def send_otp(phone_number):
     verification = client.verify \
         .v2 \
@@ -80,7 +86,17 @@ def check_otp(phone_number, otp_code):
         .create(to=phone_number, code=otp_code)
     return verification_check.status == "approved"
 
-
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # Doesn't actually connect, just gets local IP
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
 
 # 1. CONFIGURATION
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
@@ -224,8 +240,35 @@ def error():
     # Optionally pass extra error message with: render_template('error.html', error_message="Custom info")
     return render_template('error.html')
 
+@app.route('/login/qr')
+def login_qr():
+    qr_token = str(uuid.uuid4())
+    QR_SESSIONS[qr_token] = {"status": "pending", "expires_at": time.time() + 60}
+    ip_addr = get_local_ip()
+    qr_url = f"http://{ip_addr}:5000/scan-qr/{qr_token}"
+    qr_img_path = f"static/qr_{qr_token}.png"
+    qrcode.make(qr_url).save(qr_img_path)
+    return render_template('login_qr.html', qr_image_path=f'/static/qr_{qr_token}.png', qr_token=qr_token)
+
+@app.route('/scan-qr/<qr_token>')
+def scan_qr(qr_token):
+    # User scans QR with mobile → this endpoint hit
+    info = QR_SESSIONS.get(qr_token)
+    if not info or info["expires_at"] < time.time():
+        return "QR code expired or invalid", 400
+    info["status"] = "authenticated"
+    # Optionally, set session/cookie for logged-in user here or redirect
+    session['logged_in'] = True
+    return "QR Code scanned! You are logged in."
+
+@app.route('/api/qr-status/<qr_token>')
+def qr_status(qr_token):
+    info = QR_SESSIONS.get(qr_token)
+    if not info:
+        return jsonify(status="expired")
+    return jsonify(status=info["status"])
 
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")

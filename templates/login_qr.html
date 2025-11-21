@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login with QR Code</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bg-brand-red { background-color: #FF3333; }
+    </style>
+</head>
+<body class="bg-white h-screen flex items-center justify-center">
+    <div class="flex flex-col items-center bg-gray-50 p-10 rounded-2xl shadow-xl">
+        <h1 class="text-brand-red text-2xl font-bold mb-4">Scan QR to Login (Singpass Style)</h1>
+        <div class="mb-6">
+            <img src="{{ qr_image_path }}" alt="Login QR Code" class="w-64 h-64 border-2 border-red-300 rounded-xl">
+        </div>
+        <p class="text-gray-500 text-center mb-6">
+            Open your mobile app and scan this QR. You'll be logged in automatically!
+        </p>
+        <div id="status" class="font-semibold text-gray-700"></div>
+    </div>
+
+    <script>
+    // Simple polling for QR scan status
+    setInterval(async () => {
+        let resp = await fetch("/api/qr-status/{{ qr_token }}");
+        let data = await resp.json();
+        if (data.status === "authenticated") {
+            document.getElementById("status").innerText = "Logged in! Redirecting ...";
+            setTimeout(() => window.location = "/", 1200);
+        } else if(data.status === "scanned") {
+            document.getElementById("status").innerText = "Code scanned, authenticating ...";
+        }
+    }, 2000);
+    </script>
+</body>
+</html>
