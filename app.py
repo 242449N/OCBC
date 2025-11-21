@@ -22,6 +22,35 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()    # For accessing MySQL Database
 
 
+# 1. CONFIGURATION
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'zh', 'ms']
+
+
+# 2. LANGUAGE SELECTOR
+def get_locale():
+    # Priority 1: URL parameter (e.g. ?lang=zh)
+    lang = request.args.get('lang')
+    if lang in app.config['BABEL_SUPPORTED_LOCALES']:
+        session['language'] = lang
+        return lang
+
+    # Priority 2: Saved Session
+    return session.get('language', request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES']))
+
+
+# 3. INITIALIZE BABEL
+babel = Babel(app, locale_selector=get_locale)
+
+
+@app.context_processor
+def inject_conf_var():
+    return dict(
+        get_locale=get_locale,
+        current_language=get_locale()
+    )
+
+
 def initialize_database():
     try:
         mycursor.execute("""
@@ -50,6 +79,18 @@ def home():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+
+# --- THE LANGUAGE SWITCHER ROUTE ---
+@app.route('/set_language/<lang_code>')
+def set_language(lang_code):
+    # 1. Validate the language
+    if lang_code in app.config['BABEL_SUPPORTED_LOCALES']:
+        # 2. Save to session
+        session['language'] = lang_code
+
+    # 3. Redirect back to home
+    return redirect(url_for('home'))
 
 
 

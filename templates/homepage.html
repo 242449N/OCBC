@@ -1,10 +1,9 @@
-do u have any python application or smt to change languages of the whole webpage?
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ get_locale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCBC - Banking made easy</title>
+    <title>{{ _('OCBC - Banking made easy') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -18,10 +17,10 @@ do u have any python application or smt to change languages of the whole webpage
     <div class="bg-gradient-to-r from-slate-600 to-slate-500 text-white text-sm py-3 px-4 flex justify-center items-start gap-3">
         <div class="bg-white text-slate-600 rounded text-xs font-bold px-1 mt-1">!</div>
         <div class="max-w-5xl">
-            <span class="font-bold block mb-1">Watch out for scam callers impersonating OCBC staff</span>
+            <span class="font-bold block mb-1">{{ _('Watch out for scam callers impersonating OCBC staff') }}</span>
             <p class="opacity-90 text-xs leading-relaxed">
-                Are you getting calls from unknown numbers? If a caller claims to be from OCBC and says they are connecting you to the police, hang up. Banks do not operate this way.
-                <a href="#" class="underline ml-1">Learn more.</a>
+                {{ _('Are you getting calls from unknown numbers? If a caller claims to be from OCBC and says they are connecting you to the police, hang up. Banks do not operate this way.') }}
+                <a href="#" class="underline ml-1">{{ _('Learn more.') }}</a>
             </p>
         </div>
     </div>
@@ -29,28 +28,42 @@ do u have any python application or smt to change languages of the whole webpage
     <header class="bg-white py-6 px-4 md:px-12 flex justify-between items-center max-w-7xl mx-auto w-full relative z-50">
         <div class="flex items-center gap-12">
             <div class="text-red-600 font-inter font-bold text-4xl tracking-tighter flex flex-col leading-none">
-            <img src="/static/OCBC.jpg" width="150">
-                <span class="text-xs text-gray-400 font-normal mt-1 tracking-normal">Banking made easy</span>
+            <img src="/static/OCBC.jpg" width="150" alt="Logo">
+                <span class="text-xs text-gray-400 font-normal mt-1 tracking-normal">{{ _('Banking made easy') }}</span>
             </div>
 
             <nav class="hidden md:flex gap-8 font-bold text-lg text-gray-800 font-inter">
                 <a href="#" class="flex items-center gap-2 hover:text-red-600">
-                    <i data-lucide="home" class="w-5 h-5"></i> Personal
+                    <i data-lucide="home" class="w-5 h-5"></i> {{ _('Personal') }}
                 </a>
                 <a href="#" class="flex items-center gap-2 hover:text-red-600">
-                    <i data-lucide="briefcase" class="w-5 h-5"></i> Business
+                    <i data-lucide="briefcase" class="w-5 h-5"></i> {{ _('Business') }}
                 </a>
                 <a href="#" class="flex items-center gap-2 hover:text-red-600">
-                    <i data-lucide="credit-card" class="w-5 h-5"></i> Card Services
+                    <i data-lucide="credit-card" class="w-5 h-5"></i> {{ _('Card Services') }}
                 </a>
             </nav>
         </div>
 
         <div class="flex items-center gap-6 font-inter">
-            <span class="font-bold text-xl text-gray-800 cursor-pointer">EN</span>
+
+    <div class="relative group cursor-pointer py-2"> <div class="flex items-center gap-1 font-bold text-xl text-gray-800">
+            {{ current_language|upper }}
+            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i>
+        </div>
+
+        <div class="hidden group-hover:block absolute top-full right-0 pt-2 w-24 z-50">
+            <div class="bg-white shadow-xl border border-gray-100 rounded-lg overflow-hidden">
+                <a href="{{ url_for('set_language', lang_code='en') }}" class="block px-4 py-2 hover:bg-gray-50 hover:text-red-600 text-sm font-bold {{ 'text-red-600 bg-red-50' if current_language == 'en' else 'text-gray-700' }}">English</a>
+                <a href="{{ url_for('set_language', lang_code='zh') }}" class="block px-4 py-2 hover:bg-gray-50 hover:text-red-600 text-sm font-bold {{ 'text-red-600 bg-red-50' if current_language == 'zh' else 'text-gray-700' }}">中文</a>
+                <a href="{{ url_for('set_language', lang_code='ms') }}" class="block px-4 py-2 hover:bg-gray-50 hover:text-red-600 text-sm font-bold {{ 'text-red-600 bg-red-50' if current_language == 'ms' else 'text-gray-700' }}">Malay</a>
+            </div>
+        </div>
+    </div>
+
             <a href="/login">
                 <button class="text-red-600 font-bold text-xl flex items-center gap-2 hover:opacity-80">
-                    Login <i data-lucide="user" class="w-6 h-6 fill-current"></i>
+                    {{ _('Login') }} <i data-lucide="user" class="w-6 h-6 fill-current"></i>
                 </button>
             </a>
         </div>
@@ -68,7 +81,7 @@ do u have any python application or smt to change languages of the whole webpage
                 <input
                     type="text"
                     id="smart-input"
-                    placeholder="Need help? Ask me anything. You can also type your username..."
+                    placeholder="{{ _('Need help? Ask me anything. You can also type your username...') }}"
                     class="w-full py-5 px-8 rounded-full text-lg shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-600 placeholder-gray-400 font-inter"
                 />
                 <i data-lucide="mic" class="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-800 cursor-pointer"></i>
@@ -76,7 +89,7 @@ do u have any python application or smt to change languages of the whole webpage
         </div>
 
         <div class="bg-[#545252] rounded-[20px] p-10 w-full max-w-5xl relative z-20 shadow-2xl -mb-32">
-            <h2 class="text-white text-3xl font-bold mb-8 text-center font-inter">Popular Services</h2>
+            <h2 class="text-white text-3xl font-bold mb-8 text-center font-inter">{{ _('Popular Services') }}</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-2xl p-6 flex flex-col gap-4 hover:scale-105 transition-transform cursor-pointer border border-[#EFEFEF]">
@@ -84,8 +97,8 @@ do u have any python application or smt to change languages of the whole webpage
                          <i data-lucide="wallet" class="text-red-600"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-red-600 font-inter text-sm">Open Account</h3>
-                        <p class="text-gray-400 text-xs mt-1 font-inter">Start your banking journey with us</p>
+                        <h3 class="font-bold text-red-600 font-inter text-sm">{{ _('Open Account') }}</h3>
+                        <p class="text-gray-400 text-xs mt-1 font-inter">{{ _('Start your banking journey with us') }}</p>
                     </div>
                 </div>
 
@@ -94,8 +107,8 @@ do u have any python application or smt to change languages of the whole webpage
                          <i data-lucide="send" class="text-blue-600"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-blue-600 font-inter text-sm">Transfer Funds</h3>
-                        <p class="text-gray-400 text-xs mt-1 font-inter">Quick and Secure Transfer</p>
+                        <h3 class="font-bold text-blue-600 font-inter text-sm">{{ _('Transfer Funds') }}</h3>
+                        <p class="text-gray-400 text-xs mt-1 font-inter">{{ _('Quick and Secure Transfer') }}</p>
                     </div>
                 </div>
 
@@ -104,8 +117,8 @@ do u have any python application or smt to change languages of the whole webpage
                          <i data-lucide="trending-up" class="text-orange-500"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-orange-500 font-inter text-sm">Investments</h3>
-                        <p class="text-gray-400 text-xs mt-1 font-inter">Explore Investment Opportunities</p>
+                        <h3 class="font-bold text-orange-500 font-inter text-sm">{{ _('Investments') }}</h3>
+                        <p class="text-gray-400 text-xs mt-1 font-inter">{{ _('Explore Investment Opportunities') }}</p>
                     </div>
                 </div>
             </div>
@@ -117,12 +130,12 @@ do u have any python application or smt to change languages of the whole webpage
     <section class="bg-white py-20 max-w-7xl mx-auto px-4 md:px-12">
         <div class="flex flex-col md:flex-row items-center gap-12">
             <div class="flex-1">
-                <h2 class="text-3xl font-bold text-[#363B40] mb-4 leading-snug">Purpose is about lifting others.</h2>
+                <h2 class="text-3xl font-bold text-[#363B40] mb-4 leading-snug">{{ _('Purpose is about lifting others.') }}</h2>
                 <p class="text-lg text-[#363B40] mb-8 font-light leading-relaxed">
-                    As One Group, OCBC enables aspirations all across ASEAN and Greater China.
+                    {{ _('As One Group, OCBC enables aspirations all across ASEAN and Greater China.') }}
                 </p>
                 <button class="text-[#005EFD] border-2 border-[#005EFD] px-6 py-2 rounded font-semibold hover:bg-blue-50 transition">
-                    Find out more
+                    {{ _('Find out more') }}
                 </button>
             </div>
             <div class="flex-1">
@@ -134,12 +147,12 @@ do u have any python application or smt to change languages of the whole webpage
     <section class="bg-white py-20 max-w-7xl mx-auto px-4 md:px-12 mb-20">
         <div class="flex flex-col md:flex-row-reverse items-center gap-12">
             <div class="flex-1">
-                <h2 class="text-3xl font-bold text-[#363B40] mb-4 leading-snug">OCBC - your partner for Johor-Singapore Special Economic Zone</h2>
+                <h2 class="text-3xl font-bold text-[#363B40] mb-4 leading-snug">{{ _('OCBC - your partner for Johor-Singapore Special Economic Zone') }}</h2>
                 <p class="text-lg text-[#363B40] mb-8 font-light leading-relaxed">
-                    Grow your business beyond borders – backed by expert advisory from our dedicated teams.
+                    {{ _('Grow your business beyond borders – backed by expert advisory from our dedicated teams.') }}
                 </p>
                 <button class="text-[#005EFD] border-2 border-[#005EFD] px-6 py-2 rounded font-semibold hover:bg-blue-50 transition">
-                    Find out more
+                    {{ _('Find out more') }}
                 </button>
             </div>
             <div class="flex-1">
@@ -149,57 +162,8 @@ do u have any python application or smt to change languages of the whole webpage
     </section>
 
     <script>
-        // Initialize Icons
         lucide.createIcons();
-
-        const input = document.getElementById('smart-input');
-        const box = document.getElementById('suggestions-box');
-        const list = document.getElementById('suggestions-list');
-        const title = document.getElementById('suggestions-title');
-
-        let timeout = null;
-
-        // Listen for typing
-        input.addEventListener('keyup', function(e) {
-            clearTimeout(timeout);
-
-            // Wait 300ms after user stops typing to send to Python
-            timeout = setTimeout(async () => {
-                const val = e.target.value;
-
-                if(val.length === 0) {
-                    box.classList.add('hidden');
-                    return;
-                }
-
-                // Call Python API
-                const response = await fetch('/api/predict', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: val })
-                });
-
-                const data = await response.json();
-
-                if (data.options && data.options.length > 0) {
-                    box.classList.remove('hidden');
-                    title.innerText = data.title || "Suggestions";
-                    list.innerHTML = data.options.map(opt => `
-                        <div class="p-4 hover:bg-red-50 cursor-pointer font-semibold border-b last:border-0 text-sm text-gray-700 flex justify-between items-center" onclick="fillInput('${opt.label}')">
-                            ${opt.label}
-                        </div>
-                    `).join('');
-                } else {
-                    box.classList.add('hidden');
-                }
-            }, 300);
-        });
-
-        function fillInput(text) {
-            input.value = text;
-            // Trigger event again to potentially switch modes
-            input.dispatchEvent(new Event('keyup'));
-        }
+        // ... (Keep your existing JS logic for suggestions) ...
     </script>
 </body>
 </html>
