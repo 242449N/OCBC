@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCBC Phone OTP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .bg-brand-red { background-color: #FF3333; }
+        .text-brand-red { color: #FF3333; }
+        .shadow-brand { box-shadow: 0 10px 25px -5px rgba(255, 51, 51, 0.3); }
+        .red-polygon {
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            background: linear-gradient(135deg, #FF4D4D 0%, #FF3333 100%);
+        }
+    </style>
+</head>
+<body class="bg-white h-screen flex overflow-hidden relative">
+
+    <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 md:px-24 relative z-10">
+
+        <div class="mb-10 flex items-center gap-2">
+            <img src="/static/OCBC.jpg" width="300">
+        </div>
+
+        <form class="w-full max-w-md space-y-6" method="POST" action="/send-otp">
+            <div class="text-xl font-bold text-brand-red mb-4 text-center">Phone OTP Login</div>
+            <div class="flex gap-2">
+                <select name="country_code"
+                    class="p-4 rounded-xl border border-gray-200 shadow-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all w-32 font-semibold"
+                    required>
+                    <option value="+65" selected>🇸🇬 +65</option>
+                    <option value="+60">🇲🇾 +60</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <!-- Add more country codes here as needed -->
+                </select>
+                <input type="text" name="phone" placeholder="Mobile Phone Number"
+                    class="w-full p-4 rounded-xl border border-gray-200 shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                    required>
+            </div>
+            <button class="w-full py-4 bg-brand-red text-white font-bold rounded-xl shadow-brand hover:opacity-90 transition-all transform hover:-translate-y-0.5">
+                SEND OTP
+            </button>
+            <div class="text-center">
+                <a href="/login" class="text-blue-500 text-sm font-medium hover:underline">Back to Login</a>
+            </div>
+        </form>
+
+        <div class="text-center mt-8 text-sm text-gray-500 w-full max-w-md">
+            New to OCBC? <a href="#" class="text-brand-red font-semibold hover:underline">Open an account</a>
+        </div>
+    </div>
+
+    <div class="hidden lg:block absolute top-0 right-0 w-2/3 h-full pointer-events-none">
+        <div class="w-full h-full red-polygon shadow-2xl"></div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

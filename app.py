@@ -6,6 +6,7 @@ from flask_babel import Babel, gettext as _
 from dotenv import load_dotenv
 from Forms import CreateSearchForm_Admin
 import mysql.connector
+from twilio.rest import Client
 load_dotenv()
 
 
@@ -58,6 +59,27 @@ mydb = mysql.connector.connect(
     database=os.getenv('db_name')
 )
 mycursor = mydb.cursor()    # For accessing MySQL Database
+
+account_sid = 'AC28b18e8e89c17c5b7e732e932043c52e'
+auth_token = '8a5550abf8d7b38ce5ca4fb0938b5b4b'
+client = Client(account_sid, auth_token)
+
+def send_otp(phone_number):
+    verification = client.verify \
+        .v2 \
+        .services('VAe02e36b90fe1a3df4fdd47939baf0c11') \
+        .verifications \
+        .create(to=phone_number, channel='sms')
+    return verification.sid
+
+def check_otp(phone_number, otp_code):
+    verification_check = client.verify \
+        .v2 \
+        .services('VAe02e36b90fe1a3df4fdd47939baf0c11') \
+        .verification_checks \
+        .create(to=phone_number, code=otp_code)
+    return verification_check.status == "approved"
+
 
 
 # 1. CONFIGURATION
@@ -166,6 +188,43 @@ def navigate():
     except Exception as e:
         print(f"Gemini Error: {e}")
         return jsonify({"suggestions": []})
+
+# login otp
+@app.route('/send-otp', methods=['GET', 'POST'])
+def send_otp_route():
+    if request.method == 'POST':
+        country_code = request.form.get('country_code')
+        phone = request.form.get('phone')
+        phone_number = f"{country_code}{phone}"
+        session['phone_number'] = phone_number
+        try:
+            # Try sending OTP via Twilio (can fail for many reasons)
+            otp_sid = send_otp(phone_number)
+        except Exception as e:
+            error_message = f"Error sending OTP: {str(e)}"
+            # Pass error message to custom error page
+            return render_template('error.html') #, error_message=error_message)
+        # If all okay, proceed to verification page
+        return render_template('verify_otp.html', phone=phone_number)
+    return render_template('phone_otp.html')
+
+
+@app.route('/verify-otp', methods=['POST'])
+def verify_otp_route():
+    phone_number = session.get('phone_number') or request.form.get('phone')
+    otp_code = request.form.get('otp')  # input field name in your form
+    verified = check_otp(phone_number, otp_code)
+    if verified:
+        return render_template('otp_result.html', status="success", phone=phone_number)
+    else:
+        return render_template('otp_result.html', status="fail", phone=phone_number)
+
+@app.route('/error')
+def error():
+    # Optionally pass extra error message with: render_template('error.html', error_message="Custom info")
+    return render_template('error.html')
+
+
 
 
 if __name__ == '__main__':
