@@ -9,6 +9,7 @@ import mysql.connector
 from twilio.rest import Client
 import uuid, time
 import qrcode
+import socket
 load_dotenv()
 
 
@@ -85,7 +86,17 @@ def check_otp(phone_number, otp_code):
         .create(to=phone_number, code=otp_code)
     return verification_check.status == "approved"
 
-
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # Doesn't actually connect, just gets local IP
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
 
 # 1. CONFIGURATION
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
@@ -233,10 +244,10 @@ def error():
 def login_qr():
     qr_token = str(uuid.uuid4())
     QR_SESSIONS[qr_token] = {"status": "pending", "expires_at": time.time() + 60}
-    qr_url = url_for('scan_qr', qr_token=qr_token, _external=True)
+    ip_addr = get_local_ip()
+    qr_url = f"http://{ip_addr}:5000/scan-qr/{qr_token}"
     qr_img_path = f"static/qr_{qr_token}.png"
     qrcode.make(qr_url).save(qr_img_path)
-    # Note: src="/static/qr_..." for Flask static handling!
     return render_template('login_qr.html', qr_image_path=f'/static/qr_{qr_token}.png', qr_token=qr_token)
 
 @app.route('/scan-qr/<qr_token>')
@@ -260,4 +271,4 @@ def qr_status(qr_token):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0")
