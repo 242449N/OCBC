@@ -186,22 +186,120 @@
     </section>
 
     <script>
+        // Initialize Icons on load
         lucide.createIcons();
 
-        // Toggle the dropdown visibility
+        // ==========================================
+        // 1. LOGIN DROPDOWN LOGIC (Keep existing)
+        // ==========================================
         function toggleLoginMenu() {
             const menu = document.getElementById('login-dropdown');
             menu.classList.toggle('hidden');
         }
 
-        // Close dropdown if clicking anywhere else on the screen
         window.addEventListener('click', function(e) {
             const container = document.getElementById('login-container');
             const menu = document.getElementById('login-dropdown');
-
-            // If the click is OUTSIDE the container, hide the menu
             if (!container.contains(e.target)) {
                 menu.classList.add('hidden');
+            }
+        });
+
+        // ==========================================
+        // 2. AI SMART INPUT LOGIC (New)
+        // ==========================================
+        const searchInput = document.getElementById('smart-input');
+        const suggestionsBox = document.getElementById('suggestions-box');
+        const suggestionsList = document.getElementById('suggestions-list');
+        const suggestionsTitle = document.getElementById('suggestions-title');
+
+        let debounceTimer;
+
+        // A. Listen for typing
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+
+            // Clear previous timer (Prevents sending request on every keystroke)
+            clearTimeout(debounceTimer);
+
+            // Hide if empty
+            if (query.length === 0) {
+                suggestionsBox.classList.add('hidden');
+                return;
+            }
+
+            // Show "Thinking..." state immediately
+            suggestionsBox.classList.remove('hidden');
+            suggestionsTitle.textContent = "Processing...";
+            suggestionsList.innerHTML = '<div class="p-4 text-gray-400 text-xs animate-pulse">Asking OCBC AI...</div>';
+
+            // Wait 400ms after user stops typing, then send to Python
+            debounceTimer = setTimeout(() => {
+                fetchSuggestions(query);
+            }, 400);
+        });
+
+        // B. Send to Python Backend
+        async function fetchSuggestions(query) {
+            try {
+                const response = await fetch('/api/navigate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: query })
+                });
+
+                const data = await response.json();
+                renderSuggestions(data.suggestions);
+
+            } catch (error) {
+                console.error('Error:', error);
+                suggestionsList.innerHTML = '<div class="p-4 text-red-500 text-xs">Connection error. Please try again.</div>';
+            }
+        }
+
+        // C. Draw the results on screen
+        function renderSuggestions(items) {
+            suggestionsList.innerHTML = ''; // Clear old results
+
+            if (!items || items.length === 0) {
+                suggestionsTitle.textContent = "No Results";
+                suggestionsList.innerHTML = '<div class="p-4 text-gray-400 text-sm">We couldn\'t find a page matching that. Try "Login" or "Cards".</div>';
+                return;
+            }
+
+            suggestionsTitle.textContent = "Recommended Actions";
+
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center gap-4 p-4 hover:bg-red-50 cursor-pointer border-b border-gray-100 transition-colors group';
+
+                // We inject the Lucide icon name into the HTML
+                div.innerHTML = `
+                    <div class="bg-gray-100 text-gray-600 p-2 rounded-lg group-hover:bg-red-100 group-hover:text-red-600 transition-colors">
+                        <i data-lucide="${item.icon || 'arrow-right'}" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-800 text-sm group-hover:text-red-700">${item.label}</div>
+                        <div class="text-xs text-gray-400 group-hover:text-red-400">${item.desc || 'Go to page'}</div>
+                    </div>
+                `;
+
+                // Navigate when clicked
+                div.onclick = () => {
+                    window.location.href = item.url;
+                };
+
+                suggestionsList.appendChild(div);
+            });
+
+            // CRITICAL: Re-run Lucide to render the new icons we just added
+            lucide.createIcons();
+        }
+
+        // D. Close suggestions if clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                suggestionsBox.classList.add('hidden');
             }
         });
     </script>
