@@ -22,35 +22,55 @@ model = genai.GenerativeModel(
     generation_config={"response_mime_type": "application/json"}
 )
 
-# Define the valid pages the AI can recommend
+
 SITE_MAP = [
-{
-        "label": "Personal Login",
-        "url": "/login",
+    #Level 1: MAIN CATEGORIES (Triggered by "login")
+    {
+        "label": "Personal Banking Login",
+        "url": "/login/personal", # or just triggers a search for 'personal'
         "icon": "user",
-        "desc": "Internet Banking",
-        "keywords": "login, sign in, access, user, password, account"
+        "desc": "Internet Banking for Individuals",
+        "keywords": "login, sign in, access account, check balance"
     },
     {
-        "label": "Business Login",
+        "label": "Business Login (Velocity)",
         "url": "/login/business",
         "icon": "briefcase",
-        "desc": "Velocity @ OCBC",
-        "keywords": "login, sign in, access, sme, corporate, velocity"
+        "desc": "Corporate & SME Banking",
+        "keywords": "login, sign in, business, corporate, velocity"
+    },
+
+    # Level 2: PERSONAL METHODS (Triggered by "Personal Login")
+    {
+        "label": "Log in with Singpass",
+        "url": "/login/singpass",
+        "icon": "smartphone",
+        "desc": "Fastest way for Personal Accounts",
+        "keywords": "personal login, singpass, mobile app, face id"
     },
     {
-        "label": "Open 360 Account",
-        "url": "/personal/accounts/360",
-        "icon": "wallet",
-        "desc": "High interest savings",
-        "keywords": "create, new, register, signup, save, money"
+        "label": "Log in with Access Code",
+        "url": "/login/password",
+        "icon": "key-round",
+        "desc": "Personal User ID & PIN",
+        "keywords": "personal login, access code, password, pin"
     },
-    {"label": "Personal Login", "url": "/login", "icon": "user"},
-    {"label": "Business Login (Velocity)", "url": "/login/business", "icon": "briefcase"},
-    {"label": "Open 360 Account", "url": "/personal/accounts/360", "icon": "wallet"},
-    {"label": "Frank Account (Youth)", "url": "/personal/accounts/frank", "icon": "smile"},
-    {"label": "Credit Card Application", "url": "/personal/cards/apply", "icon": "credit-card"},
-    {"label": "Contact Customer Service", "url": "/support/contact", "icon": "phone"},
+    {
+        "label": "Biometric Login",
+        "url": "/login/bio",
+        "icon": "fingerprint",
+        "desc": "Use Fingerprint or FaceID",
+        "keywords": "personal login, biometric, fingerprint"
+    },
+
+    # Level 3: BUSINESS METHODS (Triggered by "Business Login")
+    {
+        "label": "Velocity Mobile",
+        "url": "/login/business/mobile",
+        "icon": "tablet-smartphone",
+        "desc": "Business login via App",
+        "keywords": "business login, velocity mobile, sme app"
+    }
 ]
 
 
@@ -134,14 +154,21 @@ def initialize_database():
                 user_id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(100) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
-                email VARCHAR(100),
-                role ENUM('member', 'staff', 'manager') NOT NULL
+                access_code VARCHAR(20),
+                pin VARCHAR(20)
             )
         """)
 
+        # Insert test user
+        mycursor.execute("""
+            INSERT IGNORE INTO users (username, password, access_code, pin)
+            VALUES (%s, %s, %s, %s)
+        """, ("Clara Lim", "password", "A12345B", "123456"))
 
         mydb.commit()
-        print("Database initialized.")
+
+        print("Database initialized and test user added.")
+
     except Exception as e:
         print("Error initializing database:", e)
 
@@ -151,9 +178,37 @@ def home():
     return render_template('homepage.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        access_code = request.form.get('access_code')
+        pin = request.form.get('pin')
+
+        print("User submitted:", access_code, pin)  # Debug
+
+        # Query database
+        mycursor.execute("""
+            SELECT * FROM users
+            WHERE access_code = %s AND pin = %s
+        """, (access_code, pin))
+
+        user = mycursor.fetchone()
+
+        if user:
+            session['logged_in'] = True
+            session['user_id'] = user[0]  # user_id column
+            return redirect(url_for('home'))  # redirect to homepage
+
+        # If wrong access code or PIN
+        return render_template('login.html', error="Invalid Access Code or PIN")
+
     return render_template('login.html')
+
+
+@app.route('/home/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 
 @app.route('/login/business')
@@ -176,24 +231,32 @@ def set_language(lang_code):
 @app.route('/api/navigate', methods=['POST'])
 def navigate():
     data = request.get_json()
-    user_query = data.get('message', '')
+    user_query = data.get('message', '').lower()  # Convert to lowercase for easier matching
 
     if not user_query or len(user_query) < 2:
         return jsonify({"suggestions": []})
 
-    # IMPROVED PROMPT
+    # INTELLIGENT HIERARCHY PROMPT
     prompt = f"""
-    You are a navigation router for OCBC.
+    You are a smart navigation router for a bank.
 
     User Input: "{user_query}"
 
-    Task: Match the input to the following Site Map:
+    Data Source: 
     {json.dumps(SITE_MAP)}
 
-    CRITICAL RULES:
-    1. If the user input is generic (e.g., "login", "sign in"), you MUST return ALL login options (both Personal and Business).
-    2. If the user specifies a type (e.g., "business login"), return ONLY that specific one.
-    3. Return a JSON object: {{ "suggestions": [ {{ "label": "...", "url": "...", "icon": "...", "desc": "..." }} ] }}
+    LOGIC GUIDELINES:
+    1. VAGUE QUERY ("login", "sign in"): 
+       - Return ONLY the "Level 1" main categories (Personal Banking Login, Business Login).
+       - Do NOT show specific methods like Singpass yet.
+
+    2. SPECIFIC QUERY ("personal login", "internet banking", "singpass"):
+       - Return the "Level 2" specific methods (Singpass, Access Code, Biometric).
+
+    3. BUSINESS QUERY ("business login", "velocity"):
+       - Return the "Level 3" business methods.
+
+    Return JSON: {{ "suggestions": [ ... ] }}
     """
 
     try:
@@ -266,9 +329,13 @@ def qr_status(qr_token):
     info = QR_SESSIONS.get(qr_token)
     if not info:
         return jsonify(status="expired")
+
+    if info["status"] == "authenticated":
+        session['logged_in'] = True  # <- now the browser gets the session
     return jsonify(status=info["status"])
 
 
 
 if __name__ == '__main__':
+    initialize_database()
     app.run(host="0.0.0.0")

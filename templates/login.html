@@ -30,14 +30,14 @@
             <img src="/static/OCBC.jpg" width="300">
         </div>
 
-        <form class="w-full max-w-md space-y-6">
+        <form class="w-full max-w-md space-y-6" method="POST" action="{{ url_for('login') }}">
             <div>
-                <input type="text" placeholder="Access Code"
+                <input type="text" name="access_code" placeholder="Access Code"
                     class="w-full p-4 rounded-xl border border-gray-200 shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                 >
             </div>
             <div>
-                <input type="password" placeholder="PIN"
+                <input type="password" name="pin" placeholder="PIN"
                     class="w-full p-4 rounded-xl border border-gray-200 shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                 >
             </div>
@@ -45,11 +45,8 @@
             <button class="w-full py-4 bg-brand-red text-white font-bold rounded-xl shadow-brand hover:opacity-90 transition-all transform hover:-translate-y-0.5">
                 LOGIN
             </button>
-
-            <div class="text-center">
-                <a href="#" class="text-blue-500 text-sm font-medium hover:underline">No Access Code/PIN?</a>
-            </div>
         </form>
+
 
         <div class="w-full max-w-md mt-8">
             <div class="flex items-center gap-4 mb-6">

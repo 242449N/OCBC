@@ -62,33 +62,46 @@
     </div>
 
 <div class="relative" id="login-container">
-    <button onclick="toggleLoginMenu()" class="text-red-600 font-bold text-xl flex items-center gap-2 hover:opacity-80 focus:outline-none">
-        {{ _('Login') }}
-        <i data-lucide="user" class="w-6 h-6 fill-current"></i>
-        <i data-lucide="chevron-down" class="w-4 h-4 ml-1"></i>
-    </button>
-
-    <div id="login-dropdown" class="hidden absolute right-0 top-full mt-2 w-56 bg-white shadow-xl border border-gray-200 rounded-xl overflow-hidden z-50">
-        <a href="/login" class="flex items-center gap-3 px-5 py-4 hover:bg-red-50 group border-b border-gray-100">
-            <div class="bg-red-100 p-2 rounded-full group-hover:bg-red-200">
-                <i data-lucide="user" class="w-4 h-4 text-red-600"></i>
-            </div>
-            <div>
-                <span class="block text-sm font-bold text-gray-800 group-hover:text-red-600">Personal Login</span>
-                <span class="block text-xs text-gray-500">Internet Banking</span>
-            </div>
+    {% if session.get('logged_in') %}
+        <!-- SHOW LOGOUT BUTTON WHEN LOGGED IN -->
+        <a href="{{ url_for('logout') }}"
+           class="text-red-600 font-bold text-xl flex items-center gap-2 hover:opacity-80">
+            <i data-lucide="log-out" class="w-6 h-6"></i>
+            {{ _('Logout') }}
         </a>
 
-        <a href="/login/business" class="flex items-center gap-3 px-5 py-4 hover:bg-red-50 group">
-            <div class="bg-blue-100 p-2 rounded-full group-hover:bg-blue-200">
-                <i data-lucide="briefcase" class="w-4 h-4 text-blue-600"></i>
-            </div>
-            <div>
-                <span class="block text-sm font-bold text-gray-800 group-hover:text-red-600">Business Login</span>
-                <span class="block text-xs text-gray-500">Velocity @ obcb</span>
-            </div>
-        </a>
-    </div>
+    {% else %}
+        <!-- SHOW LOGIN MENU WHEN NOT LOGGED IN -->
+        <button onclick="toggleLoginMenu()" class="text-red-600 font-bold text-xl flex items-center gap-2 hover:opacity-80 focus:outline-none">
+            {{ _('Login') }}
+            <i data-lucide="user" class="w-6 h-6 fill-current"></i>
+            <i data-lucide="chevron-down" class="w-4 h-4 ml-1"></i>
+        </button>
+
+        <div id="login-dropdown"
+             class="hidden absolute right-0 top-full mt-2 w-56 bg-white shadow-xl border border-gray-200 rounded-xl overflow-hidden z-50">
+
+            <a href="/login" class="flex items-center gap-3 px-5 py-4 hover:bg-red-50 group border-b border-gray-100">
+                <div class="bg-red-100 p-2 rounded-full group-hover:bg-red-200">
+                    <i data-lucide="user" class="w-4 h-4 text-red-600"></i>
+                </div>
+                <div>
+                    <span class="block text-sm font-bold text-gray-800 group-hover:text-red-600">Personal Login</span>
+                    <span class="block text-xs text-gray-500">Internet Banking</span>
+                </div>
+            </a>
+
+            <a href="/login/business" class="flex items-center gap-3 px-5 py-4 hover:bg-red-50 group">
+                <div class="bg-blue-100 p-2 rounded-full group-hover:bg-blue-200">
+                    <i data-lucide="briefcase" class="w-4 h-4 text-blue-600"></i>
+                </div>
+                <div>
+                    <span class="block text-sm font-bold text-gray-800 group-hover:text-red-600">Business Login</span>
+                    <span class="block text-xs text-gray-500">Velocity @ OCBC</span>
+                </div>
+            </a>
+        </div>
+    {% endif %}
 </div>
         </div>
     </header>
@@ -96,8 +109,7 @@
     <section class="bg-[#F2EEEE] pt-20 pb-48 px-4 flex flex-col items-center relative">
 
         <div class="w-full max-w-3xl relative z-30 mb-12">
-            <div id="suggestions-box" class="hidden absolute bottom-full mb-2 w-full bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-                <div id="suggestions-title" class="bg-gray-50 px-4 py-2 text-xs font-bold text-gray-500 uppercase tracking-wide"></div>
+            <div id="suggestions-box" class="hidden absolute top-full mt-4 w-full bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">                <div id="suggestions-title" class="bg-gray-50 px-4 py-2 text-xs font-bold text-gray-500 uppercase tracking-wide"></div>
                 <div id="suggestions-list"></div>
             </div>
 
