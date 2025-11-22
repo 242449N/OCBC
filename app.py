@@ -24,52 +24,50 @@ model = genai.GenerativeModel(
 
 
 SITE_MAP = [
-    #Level 1: MAIN CATEGORIES (Triggered by "login")
+    # ==========================================
+    # LEVEL 1: BROAD CATEGORIES
+    # (Triggered by "I wanna login", "Login", "Sign in")
+    # ==========================================
     {
         "label": "Personal Banking Login",
-        "url": "/login/personal", # or just triggers a search for 'personal'
+        "url": "/login",
         "icon": "user",
-        "desc": "Internet Banking for Individuals",
-        "keywords": "login, sign in, access account, check balance"
+        "desc": "Internet Banking & Savings",
+        "keywords": "login, sign in, access, main menu"
     },
     {
         "label": "Business Login (Velocity)",
         "url": "/login/business",
         "icon": "briefcase",
         "desc": "Corporate & SME Banking",
-        "keywords": "login, sign in, business, corporate, velocity"
+        "keywords": "login, sign in, business, corporate"
     },
 
-    # Level 2: PERSONAL METHODS (Triggered by "Personal Login")
+    # ==========================================
+    # LEVEL 2: PERSONAL METHODS
+    # (Triggered by "Personal Account", "Personal Login")
+    # ==========================================
     {
         "label": "Log in with Singpass",
-        "url": "/login/singpass",
+        "url": "/login/qr",
         "icon": "smartphone",
-        "desc": "Fastest way for Personal Accounts",
-        "keywords": "personal login, singpass, mobile app, face id"
+        "desc": "Mobile Login",
+        "keywords": "personal account, personal login, singpass, mobile"
     },
     {
-        "label": "Log in with Access Code",
+        "label": "Access Code & PIN",
         "url": "/login/password",
         "icon": "key-round",
-        "desc": "Personal User ID & PIN",
-        "keywords": "personal login, access code, password, pin"
+        "desc": "Standard Login",
+        "keywords": "personal account, personal login, access code, password"
     },
     {
-        "label": "Biometric Login",
-        "url": "/login/bio",
-        "icon": "fingerprint",
-        "desc": "Use Fingerprint or FaceID",
-        "keywords": "personal login, biometric, fingerprint"
-    },
-
-    # Level 3: BUSINESS METHODS (Triggered by "Business Login")
-    {
-        "label": "Velocity Mobile",
-        "url": "/login/business/mobile",
-        "icon": "tablet-smartphone",
-        "desc": "Business login via App",
-        "keywords": "business login, velocity mobile, sme app"
+        "label": "OneToken / SMS OTP",
+        "url": "/send-otp",
+        "icon": "shield-check",
+        "desc": "Security Token & 2FA",
+        # CRITICAL: "personal account" is here so it appears in the list
+        "keywords": "personal account, personal login, otp, token, sms, 2fa"
     }
 ]
 
@@ -231,35 +229,38 @@ def set_language(lang_code):
 @app.route('/api/navigate', methods=['POST'])
 def navigate():
     data = request.get_json()
-    user_query = data.get('message', '').lower()  # Convert to lowercase for easier matching
+    user_query = data.get('message', '').lower()
 
     if not user_query or len(user_query) < 2:
         return jsonify({"suggestions": []})
 
-    # INTELLIGENT HIERARCHY PROMPT
+    # We use strict RULES to force the AI to behave exactly as you want
     prompt = f"""
-    You are a smart navigation router for a bank.
+    You are a precise navigation engine for OCBC Bank.
 
     User Input: "{user_query}"
+    Data Source: {json.dumps(SITE_MAP)}
 
-    Data Source: 
-    {json.dumps(SITE_MAP)}
+    STRICT RULES:
+    1. IF input is GENERIC (e.g., "login", "i wanna login"):
+       - Show ONLY the Level 1 Categories (Personal Banking Login, Business Login).
+       - Do NOT show specific methods like Singpass or OTP yet.
 
-    LOGIC GUIDELINES:
-    1. VAGUE QUERY ("login", "sign in"): 
-       - Return ONLY the "Level 1" main categories (Personal Banking Login, Business Login).
-       - Do NOT show specific methods like Singpass yet.
+    2. IF input specifies "PERSONAL" or "PERSONAL ACCOUNT":
+       - You MUST return ALL 3 items related to personal login:
+         1. Log in with Singpass
+         2. Access Code & PIN
+         3. OneToken / SMS OTP
+       - Do not leave out the OTP option.
 
-    2. SPECIFIC QUERY ("personal login", "internet banking", "singpass"):
-       - Return the "Level 2" specific methods (Singpass, Access Code, Biometric).
-
-    3. BUSINESS QUERY ("business login", "velocity"):
-       - Return the "Level 3" business methods.
+    3. IF input specifies "BUSINESS":
+       - Show Business Login options.
 
     Return JSON: {{ "suggestions": [ ... ] }}
     """
 
     try:
+        # Using Gemini to process the logic
         response = model.generate_content(prompt)
         result = json.loads(response.text)
         return jsonify(result)
