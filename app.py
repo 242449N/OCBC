@@ -56,7 +56,7 @@ SITE_MAP = [
     },
     {
         "label": "Access Code & PIN",
-        "url": "/login/password",
+        "url": "/login",
         "icon": "key-round",
         "desc": "Standard Login",
         "keywords": "personal account, personal login, access code, password"
@@ -292,10 +292,16 @@ def send_otp_route():
 @app.route('/verify-otp', methods=['POST'])
 def verify_otp_route():
     phone_number = session.get('phone_number') or request.form.get('phone')
-    otp_code = request.form.get('otp')  # input field name in your form
+    otp_code = request.form.get('otp')
+
     verified = check_otp(phone_number, otp_code)
+
     if verified:
+        session['logged_in'] = True              # ✅ mark user as logged in
+        session['login_method'] = "phone_otp"    # optional: record method
+        session['phone'] = phone_number          # optional: save phone
         return render_template('otp_result.html', status="success", phone=phone_number)
+
     else:
         return render_template('otp_result.html', status="fail", phone=phone_number)
 
