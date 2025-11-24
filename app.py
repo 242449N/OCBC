@@ -82,7 +82,7 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()    # For accessing MySQL Database
 
 account_sid = 'AC28b18e8e89c17c5b7e732e932043c52e'
-auth_token = '8a5550abf8d7b38ce5ca4fb0938b5b4b'
+auth_token = 'ac2bf2a13032333c5a6721f42a5d24f1'
 client = Client(account_sid, auth_token)
 
 QR_SESSIONS = {}
